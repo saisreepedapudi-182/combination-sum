@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<vector<int>> result;
+
+    void backtrack(vector<int>& candidates, int target, int start,
+                   vector<int>& current) {
+        
+        // Base case: target achieved
+        if (target == 0) {
+            result.push_back(current);
+            return;
+        }
+
+        // Try each candidate starting from 'start'
+        for (int i = start; i < candidates.size(); i++) {
+            
+            // If candidate is greater than remaining target, skip
+            if (candidates[i] > target)
+                continue;
+
+            // Choose the candidate
+            current.push_back(candidates[i]);
+
+            // Recurse with reduced target
+            // i (not i+1) because we can reuse the same number
+            backtrack(candidates, target - candidates[i], i, current);
+
+            // Backtrack (remove last element)
+            current.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> current;
+        backtrack(candidates, target, 0, current);
+        return result;
+    }
+};
